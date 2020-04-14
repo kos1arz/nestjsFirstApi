@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -23,15 +23,27 @@ export class ItemService {
     }
 
     async showOne(id: number): Promise<any> {
-        return await this.itemRepository.findOne({ where: { id } });
+        const item = await this.itemRepository.findOne({ where: { id } });
+        if (!item) {
+            throw new HttpException(`Not found item by id ${id}`, HttpStatus.NOT_FOUND);
+        }
+        return item;
     }
 
     async updata(id: number, data: Partial<ItemDTO>): Promise<any> {
+        const item = await this.itemRepository.findOne({ where: { id } });
+        if (!item) {
+            throw new HttpException(`Not found item by id: ${id}`, HttpStatus.NOT_FOUND);
+        }
         await this.itemRepository.update({ id }, data);
-        return this.itemRepository.findOne({ where: { id } });
+        return item;
     }
 
     async delete(id: number): Promise<any> {
+        const item = await this.itemRepository.findOne({ where: { id } });
+        if (!item) {
+            throw new HttpException(`Not found item by id: ${id}`, HttpStatus.NOT_FOUND);
+        }
         await this.itemRepository.delete({ id });
         return { delete: true };
     }

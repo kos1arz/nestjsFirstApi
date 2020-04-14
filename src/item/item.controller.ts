@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, UsePipes } from '@nestjs/common';
 
 import { ItemService } from './item.service';
 import { ItemDTO } from 'src/tdo/item.dto';
+import { ValidationPipe } from 'src/shared/validation.pipe';
 
 @Controller('item')
 export class ItemController {
@@ -20,11 +21,13 @@ export class ItemController {
     }
 
     @Post()
+    @UsePipes(new ValidationPipe())
     creatItem(@Body() data: ItemDTO){
         return this.itemService.create(data);
     }
 
     @Put(':id')
+    @UsePipes(new ValidationPipe())
     updateItem(@Param('id') id: number, @Body() data: Partial<ItemDTO>){
         return this.itemService.updata(id, data);
     }

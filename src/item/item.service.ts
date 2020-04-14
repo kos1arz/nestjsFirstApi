@@ -31,11 +31,12 @@ export class ItemService {
     }
 
     async updata(id: number, data: Partial<ItemDTO>): Promise<any> {
-        const item = await this.itemRepository.findOne({ where: { id } });
+        let item = await this.itemRepository.findOne({ where: { id } });
         if (!item) {
             throw new HttpException(`Not found item by id: ${id}`, HttpStatus.NOT_FOUND);
         }
         await this.itemRepository.update({ id }, data);
+        item = await this.itemRepository.findOne({ where: {id} });
         return item;
     }
 

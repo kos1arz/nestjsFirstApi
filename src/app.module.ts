@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ItemModule } from './item/item.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './shared/http-exception.filter';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), ItemModule],
+  imports: [TypeOrmModule.forRoot(), ItemModule, UserModule],
   controllers: [AppController],
   providers: [AppService, {
     provide: APP_FILTER,

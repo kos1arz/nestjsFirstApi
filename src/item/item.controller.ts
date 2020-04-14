@@ -4,7 +4,7 @@ import { ItemService } from './item.service';
 import { ItemDTO } from 'src/tdo/item.dto';
 import { ValidationPipe } from 'src/shared/validation.pipe';
 
-@Controller('item')
+@Controller('api/item')
 export class ItemController {
     constructor(
         private readonly itemService: ItemService
